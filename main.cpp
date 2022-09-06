@@ -6,14 +6,14 @@ using namespace std;
 
 //ATRIBUTOS GLOBALES
 int ingreso[100];
-void menu(); 
+void menu();
 void inicio(int level);
 
 void continuar(int level){
      int seleccion = 0;
      cout<<" ________________________________"<<endl;
      cout<<"|                                |"<<endl;
-     cout<<"| ¿DESEA CONTINUAR CON EL JUEGO? |"<<endl;
+     cout<<"|  DESEA CONTINUAR CON EL JUEGO? |"<<endl;
      cout<<"|________________________________|"<<endl;
      cout<<"|               |                |"<<endl;
      cout<<"|     1. SI     |      2. NO     |"<<endl;
@@ -21,7 +21,7 @@ void continuar(int level){
      cin>>seleccion;
      if(seleccion==1){
                       inicio(level+1);
-                      }     
+                      }
      }
 /** menu
 * Esta funcion se encarga de imprimir el menu disponible para el usuario
@@ -42,8 +42,8 @@ void menu(){
      cout<<"|_______________________________________|"<<endl;
      cout<<"|                                       |"<<endl;
      cout<<"|  3. SALIR                             |"<<endl;
-     cout<<"|_______________________________________|"<<endl;   
-          
+     cout<<"|_______________________________________|"<<endl;
+
 }
 /**
 */
@@ -51,7 +51,7 @@ void ingreso_numeros_memorizados(int level){
      //atributos
      string num_ingresados="";
      int aux=0;
-     
+
      //se ingresan los valores
      for(int j=0; j<level; j++){
              cout<<"Ingrese  el valor memorizado numero "<<j+1<<" con enter"<<endl;
@@ -60,20 +60,40 @@ void ingreso_numeros_memorizados(int level){
              aux = atoi(num_ingresados.c_str());
              ingreso[j] = aux;
      }
-} 
-     
+}
+
+void limpiar_pantalla(){
+  // Se valida el sistema operativo para ejecutar el comando clear nativo
+  // del sistema
+
+  #if defined(_WIN32) || defined(__CYGWIN__)
+    system("CLS");
+  #elif defined(__APPLE__)
+    system("clear");
+  #endif
+}
+
+void pausar_sistema(){
+  #if defined(_WIN32) || defined(__CYGWIN__)
+    cout<<"Presione una tecla para continuar..."<<endl;
+    system("PAUSE");
+  #elif defined(__APPLE__)
+    system("read -n 1 -s -p \"Presione una tecla para continuar...\"; echo");
+  #endif
+}
+
 /** inicio
 *  Este es el centro del juego de memoria
 */
 void inicio(int level){
-     
+
      //arreglo para almacenar los valores seleccionados por la funcion rand()
      int memoria[level];
      int opcion=0;
-     
+
      //se limpia la pantalla
-     system("CLS");
-     
+     limpiar_pantalla();
+
      cout<<" _______________________________________________"<<endl;
      cout<<"|                                               |"<<endl;
      cout<<"|               NIVEL "<<level<<"                         |"<<endl;
@@ -87,19 +107,21 @@ void inicio(int level){
      }
      cout<<endl;
      //comienza el juego de memoria
-     cout<<"Oprima una tecla si ya memorizo los numeros"<<endl;
-     system("PAUSE");
-     
-     system("CLS");
-     
+     cout<<"Por favor memorice los nÃºmeros impresos"<<endl;
+
+     // Se pausa el sistema
+     pausar_sistema();
+
+     limpiar_pantalla();
+
      ingreso_numeros_memorizados(level);
      //se comparan los valores dados con los establecidos
-     
+
      //contador: hara el incremento para la comparacion de valores
      int contador = 0;
      do{
-         if(memoria[contador]==ingreso[contador]){                
-                                           contador++;             
+         if(memoria[contador]==ingreso[contador]){
+                                           contador++;
                                            }
                            else{
                                 cout<<"Los valores no son iguales, intente nuevamente"<<endl;
@@ -112,16 +134,13 @@ void inicio(int level){
                                 else{
                                      break;
                                      }
-                                
+
                                 }
      }while(contador<level);
      cout<<"FELICITACIONES, Usted tiene una memoria increible"<<endl;
      cout<<endl;
      continuar(level);
-     system("CLS");
-        
-     //system("PAUSE");
-     system("CLS");
+     limpiar_pantalla();
 }
 
 /** ingreso_nivel
@@ -144,7 +163,7 @@ int main(int argc, char *argv[])
     //atributos
     int entrada=0;
     int nivel=1;
-    
+
     //MENU DEL JUEGO
     while(entrada!=3){
                       menu();
@@ -157,7 +176,7 @@ int main(int argc, char *argv[])
                            nivel = ingreso_nivel();
                            inicio(nivel);
                            }
-    }    
+    }
     return EXIT_SUCCESS;
 }
 
